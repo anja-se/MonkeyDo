@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="TodoCell" rowHeight="69" id="OEf-mo-dOO" userLabel="TodoCell" customClass="TodoCell" customModule="MonkeyDo" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="322" height="69"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="OEf-mo-dOO" id="YmX-8i-ORp">
+                <rect key="frame" x="0.0" y="0.0" width="322" height="69"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Iz7-2o-UnG">
+                        <rect key="frame" x="0.0" y="5" width="317" height="50"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ufg-SR-LYg">
+                                <rect key="frame" x="16" y="13" width="285" height="24"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DrU-cx-BmC" userLabel="CheckView">
+                                <rect key="frame" x="269" y="2.6666666666666679" width="45" height="45"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkmark" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="nU0-yW-ABA">
+                                        <rect key="frame" x="8.9999999999999982" y="10.33333333333333" width="27.333333333333329" height="24.666666666666671"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="pAS-B4-c5e"/>
+                                        </constraints>
+                                        <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="25"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.1991411424" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="45" id="30q-aP-KXz"/>
+                                    <constraint firstItem="nU0-yW-ABA" firstAttribute="centerX" secondItem="DrU-cx-BmC" secondAttribute="centerX" id="M0c-26-M3e"/>
+                                    <constraint firstItem="nU0-yW-ABA" firstAttribute="centerY" secondItem="DrU-cx-BmC" secondAttribute="centerY" id="XPY-ds-qyg"/>
+                                    <constraint firstAttribute="height" constant="45" id="hRQ-RG-1PB"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="0.89800000189999996" green="0.41990566639999999" blue="0.73640899849999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <constraints>
+                            <constraint firstItem="Ufg-SR-LYg" firstAttribute="leading" secondItem="Iz7-2o-UnG" secondAttribute="leading" constant="16" id="1eQ-Pq-TmL"/>
+                            <constraint firstAttribute="trailing" secondItem="DrU-cx-BmC" secondAttribute="trailing" constant="3" id="Duk-uU-3oe"/>
+                            <constraint firstItem="DrU-cx-BmC" firstAttribute="centerY" secondItem="Iz7-2o-UnG" secondAttribute="centerY" id="WSt-Jm-4jf"/>
+                            <constraint firstItem="Ufg-SR-LYg" firstAttribute="centerY" secondItem="Iz7-2o-UnG" secondAttribute="centerY" id="j3U-sh-ndx"/>
+                            <constraint firstAttribute="height" constant="50" id="mNo-pc-Nal"/>
+                            <constraint firstAttribute="trailing" secondItem="Ufg-SR-LYg" secondAttribute="trailing" constant="16" id="sxC-Zm-y0K"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="Iz7-2o-UnG" secondAttribute="bottom" constant="5" id="15l-j4-QAO"/>
+                    <constraint firstItem="Iz7-2o-UnG" firstAttribute="top" secondItem="YmX-8i-ORp" secondAttribute="top" constant="5" id="SJV-6V-Cde"/>
+                    <constraint firstAttribute="trailing" secondItem="Iz7-2o-UnG" secondAttribute="trailing" constant="5" id="ZF9-S0-Dg6"/>
+                    <constraint firstItem="Iz7-2o-UnG" firstAttribute="leading" secondItem="YmX-8i-ORp" secondAttribute="leading" id="q9n-cZ-PpG"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="HsP-L6-V0j"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="cellView" destination="Iz7-2o-UnG" id="Wox-Ue-Vs1"/>
+                <outlet property="checkImgView" destination="nU0-yW-ABA" id="oTf-o2-74j"/>
+                <outlet property="checkView" destination="DrU-cx-BmC" id="z40-8H-paG"/>
+                <outlet property="label" destination="Ufg-SR-LYg" id="tti-sI-dVe"/>
+            </connections>
+            <point key="canvasLocation" x="47.328244274809158" y="28.52112676056338"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="checkmark" catalog="system" width="128" height="114"/>
+    </resources>
+</document>
