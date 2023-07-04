@@ -3,8 +3,8 @@
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -18,21 +18,21 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g2N-Nl-iQ2">
-                        <rect key="frame" x="0.0" y="5" width="317" height="50"/>
+                        <rect key="frame" x="0.0" y="5" width="322" height="50"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Msy-IM-uag">
-                                <rect key="frame" x="16" y="13" width="285" height="24"/>
+                                <rect key="frame" x="16" y="13" width="290" height="24"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="textColor" name="WhiteTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X97-pO-xVe">
-                                <rect key="frame" x="269" y="2.6666666666666679" width="45" height="45"/>
+                                <rect key="frame" x="274" y="2.6666666666666679" width="45" height="45"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aTA-3Y-dht">
                                         <rect key="frame" x="5" y="5" width="35" height="35"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="textColor" name="WhiteTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
@@ -47,7 +47,7 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemMintColor"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="X97-pO-xVe" secondAttribute="trailing" constant="3" id="2lc-QI-jKG"/>
                             <constraint firstAttribute="height" constant="50" id="FPM-Gk-WEE"/>
@@ -58,11 +58,11 @@
                         </constraints>
                     </view>
                 </subviews>
-                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <color key="backgroundColor" name="BackgroundColor"/>
                 <constraints>
-                    <constraint firstItem="g2N-Nl-iQ2" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="5" id="0ac-uw-F7t"/>
-                    <constraint firstAttribute="trailing" secondItem="g2N-Nl-iQ2" secondAttribute="trailing" constant="5" id="H2F-qM-cfN"/>
-                    <constraint firstAttribute="bottom" secondItem="g2N-Nl-iQ2" secondAttribute="bottom" constant="5" id="hGX-eJ-k28"/>
+                    <constraint firstItem="g2N-Nl-iQ2" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="5" id="8au-e9-cjY"/>
+                    <constraint firstAttribute="trailing" secondItem="g2N-Nl-iQ2" secondAttribute="trailing" id="H2F-qM-cfN"/>
+                    <constraint firstAttribute="bottom" secondItem="g2N-Nl-iQ2" secondAttribute="bottom" constant="5" id="LIT-1c-UUn"/>
                     <constraint firstItem="g2N-Nl-iQ2" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="jPJ-i1-0Rh"/>
                 </constraints>
             </tableViewCellContentView>
@@ -78,8 +78,11 @@
         </tableViewCell>
     </objects>
     <resources>
-        <systemColor name="systemMintColor">
-            <color red="0.0" green="0.7803921568627451" blue="0.74509803921568629" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
+        <namedColor name="BackgroundColor">
+            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="WhiteTextColor">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>

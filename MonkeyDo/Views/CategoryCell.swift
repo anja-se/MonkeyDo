@@ -16,6 +16,7 @@ class CategoryCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+//        numView.isHidden = true
         cellView.layer.cornerRadius = cellView.frame.height / 2
         cellView.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMaxXMinYCorner]
         numView.layer.cornerRadius = numView.frame.height / 2
