@@ -106,6 +106,7 @@ class CategoryViewController: UITableViewController, UITableViewDragDelegate {
         alert.addAction(action)
         alert.addTextField{ (alertTextField) in
             alertTextField.placeholder = "Add new Category"
+            alertTextField.autocapitalizationType = .sentences
             textField = alertTextField
         }
         present(alert, animated: true)

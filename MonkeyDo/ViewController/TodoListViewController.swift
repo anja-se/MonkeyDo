@@ -9,27 +9,37 @@ import UIKit
 import CoreData
 
 class TodoListViewController: UITableViewController, UITableViewDragDelegate {
-
-    var items = [Item]()
+    @IBOutlet weak var addButton: UIBarButtonItem!
+    
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    var allItems = [Item]()
+    var displayItems = [Item]()
     var parentCategory: Category? {
         didSet {
             loadItems()
             title = parentCategory?.name
         }
     }
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-   
+    var onHide = false
+    var menu = UIMenu()
+    let menutItem = UIBarButtonItem(title: "Actions", image: UIImage(systemName: "ellipsis.circle"), primaryAction: nil, menu: UIMenu())
+    var hideAction = UIAction(){_ in }
+    var showAction = UIAction(){_ in }
+    var clearAction = UIAction(){_ in }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.register(UINib(nibName: "TodoCell", bundle: nil), forCellReuseIdentifier: "TodoCell")
         tableView.dragDelegate = self
         tableView.dragInteractionEnabled = true
+        
+        setupBar()
     }
     
     //MARK: - Tableview datasource methods
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TodoCell", for: indexPath) as! TodoCell
-        let item = items[indexPath.row]
+        let item = displayItems[indexPath.row]
         cell.label.text = item.title
         cell.checked = item.done ? true : false
         if let color = parentCategory?.color {
@@ -39,13 +49,23 @@ class TodoListViewController: UITableViewController, UITableViewDragDelegate {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        items.count
+        displayItems.count
     }
     
     // MARK: - Table view delegate methods
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        items[indexPath.row].done.toggle()
+        displayItems[indexPath.row].done.toggle()
+        let item = displayItems[indexPath.row]
+        
+        if onHide {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                self.displayItems.removeAll {
+                    $0.done == true && $0.index == item.index && $0.title == item.title
+                }
+                self.tableView.reloadData()
+            }
+        }
         saveItems()
     }
     
@@ -59,45 +79,26 @@ class TodoListViewController: UITableViewController, UITableViewDragDelegate {
     }
     
     override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        let mover = items.remove(at: sourceIndexPath.row)
-        items.insert(mover, at: destinationIndexPath.row)
+        let newIndex = Int(displayItems[destinationIndexPath.row].index)
+        let mover = displayItems.remove(at: sourceIndexPath.row)
+        displayItems.insert(mover, at: destinationIndexPath.row)
         
-        for i in 0..<items.count {
-            items[i].index = Int16(i)
+        if onHide {
+            let fromIndex = Int(mover.index)
+            let mover = allItems.remove(at: fromIndex)
+            allItems.insert(mover, at: newIndex)
+        } else {
+            allItems = displayItems
         }
-        saveItems()
+        
+        updateIndices()
     }
     
     //MARK: - Tableview drag delegate methods
     func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
         let dragItem = UIDragItem(itemProvider: NSItemProvider())
-        dragItem.localObject = items[indexPath.row]
+        dragItem.localObject = displayItems[indexPath.row]
         return [dragItem]
-    }
-    
-    // MARK: - Add new items
-    @IBAction func addButtonClicked(_ sender: UIBarButtonItem) {
-        var textField = UITextField()
-        
-        let alert = UIAlertController(title: "Add New Todo Item", message: "", preferredStyle: .alert)
-        let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
-            if !textField.text!.isEmpty {
-                
-                let newItem = Item(context: self.context)
-                newItem.title = textField.text!
-                newItem.done = false
-                newItem.index = Int16(self.items.count)
-                newItem.parentCategory = self.parentCategory
-                self.items.append(newItem)
-                self.saveItems()
-            }
-        }
-        alert.addAction(action)
-        alert.addTextField { (alertTextField) in
-            alertTextField.placeholder = "Create new item"
-            textField = alertTextField
-        }
-        present(alert, animated: true, completion: nil)
     }
     
     // MARK: - Data manipulation methods
@@ -113,7 +114,8 @@ class TodoListViewController: UITableViewController, UITableViewDragDelegate {
         
         do {
             let items = try context.fetch(request)
-            self.items = items.sorted(by: { $0.index < $1.index })
+            allItems = items.sorted(by: { $0.index < $1.index })
+            displayItems = allItems
         } catch {
             print("Error fetching data from context: \(error)")
         }
@@ -131,8 +133,104 @@ class TodoListViewController: UITableViewController, UITableViewDragDelegate {
     }
     
     func deleteItem(at index: Int){
-        context.delete(items[index])
-        items.remove(at: index)
+        
+        context.delete(displayItems[index])
+        if onHide {
+            let mainIndex = Int(displayItems[index].index)
+            print("mainIndex is: \(mainIndex)")
+            allItems.remove(at: mainIndex)
+        }
+        displayItems.remove(at: index)
+        updateIndices()
+        
         saveItems()
+    }
+    
+    func updateIndices(){
+        for i in 0..<allItems.count {
+            allItems[i].index = Int16(i)
+        }
+        saveItems()
+    }
+    
+    //MARK: - Bar and Menu Configuration
+    
+    func setupBar() {
+        menutItem.tintColor = UIColor(named: "PinkColor")
+        self.navigationItem.rightBarButtonItems = [menutItem, addButton]
+        
+        hideAction = UIAction(title: "Hide completed", image: UIImage(systemName: "eye.slash")) { action in
+            self.hide()
+            self.updateMenu()
+        }
+        showAction = UIAction(title: "Show completed", image: UIImage(systemName: "eye")) { action in
+            self.show()
+            self.updateMenu()
+        }
+        clearAction = UIAction(title: "Clear completed", image: UIImage(systemName: "xmark.circle")) {_ in
+            self.clear()
+        }
+        
+        updateMenu()
+        menutItem.menu = menu
+    }
+    
+    func updateMenu(){
+        let action = onHide ? showAction : hideAction
+        menu = UIMenu(title: "", options: .displayInline, children: [action, clearAction])
+        menutItem.menu = menu
+    }
+    
+    
+    // MARK: - Add, clear, show, hide
+    @IBAction func addButtonClicked(_ sender: UIBarButtonItem) {
+        var textField = UITextField()
+        
+        let alert = UIAlertController(title: "Add New Todo Item", message: "", preferredStyle: .alert)
+        let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
+            if !textField.text!.isEmpty {
+                
+                let newItem = Item(context: self.context)
+                newItem.title = textField.text!
+                newItem.done = false
+                newItem.index = Int16(self.allItems.count)
+                newItem.parentCategory = self.parentCategory
+                self.displayItems.append(newItem)
+                self.allItems.append(newItem)
+                self.saveItems()
+            }
+        }
+        alert.addAction(action)
+        alert.addTextField { (alertTextField) in
+            alertTextField.placeholder = "Create new item"
+            alertTextField.autocapitalizationType = .sentences
+            textField = alertTextField
+        }
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func show(){
+        onHide = false
+        displayItems = allItems//.sorted(by: { $0.index < $1.index })
+        tableView.reloadData()
+    }
+    
+    func hide(){
+        onHide = true
+        displayItems = allItems.filter{ !$0.done }
+        tableView.reloadData()
+    }
+    
+    func clear(from startIndex: Int = 0){
+//        if startIndex >= allItems.count {
+//            return
+//        }
+//
+//        for i in startIndex ..< allItems.count {
+//            if allItems[i].done {
+//                deleteItem(at: i)
+//                clear(from: i)
+//            }
+//        }
     }
 }
