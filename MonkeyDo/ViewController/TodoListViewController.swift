@@ -12,8 +12,11 @@ class TodoListViewController: UITableViewController, UITableViewDragDelegate {
     @IBOutlet weak var addButton: UIBarButtonItem!
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    var allItems = [Item]()
-    var displayItems = [Item]()
+    var items = [Item]()
+    var checkedItems = [Item]()
+    var checkedStartIndex: Int {
+        items.count - checkedItems.count
+    }
     var parentCategory: Category? {
         didSet {
             loadItems()
@@ -26,6 +29,7 @@ class TodoListViewController: UITableViewController, UITableViewDragDelegate {
     var hideAction = UIAction(){_ in }
     var showAction = UIAction(){_ in }
     var clearAction = UIAction(){_ in }
+    var tappedCells: [UUID: Timer] = [:]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,34 +43,77 @@ class TodoListViewController: UITableViewController, UITableViewDragDelegate {
     //MARK: - Tableview datasource methods
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TodoCell", for: indexPath) as! TodoCell
-        let item = displayItems[indexPath.row]
+        let item = items[indexPath.row]
         cell.label.text = item.title
         cell.checked = item.done ? true : false
         if let color = parentCategory?.color {
             cell.cellView.backgroundColor = UIColor(named: color)
         }
+        cell.cellView.layer.opacity = item.done ? 0.8 : 1.0
+    
         return cell
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        displayItems.count
+        items.count
     }
     
     // MARK: - Table view delegate methods
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        displayItems[indexPath.row].done.toggle()
-        let item = displayItems[indexPath.row]
-        
-        if onHide {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
-                self.displayItems.removeAll {
-                    $0.done == true && $0.index == item.index && $0.title == item.title
-                }
-                self.tableView.reloadData()
-            }
-        }
+        let item = items[indexPath.row]
+        item.done.toggle()
+        let wasDone = item.done
+        tableView.reloadData()
         saveItems()
+        let id = item.id
+        
+        if tappedCells[id!] != nil {
+                return
+        }
+        
+        let timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { [weak self] _ in
+            guard let self = self else {
+                return
+            }
+       
+            guard let index = self.items.firstIndex(of: item), let item = self.items.first(where: {$0.id == item.id} ) else {
+                self.tappedCells.removeValue(forKey: item.id!)
+                return
+            }
+            
+            if item.done != wasDone {
+                self.tappedCells.removeValue(forKey: item.id!)
+                return
+            }
+
+            if item.done {
+                self.checkedItems.insert(item, at: 0)
+                let newIndex = self.checkedStartIndex
+                self.items.removeAll { $0.id == item.id }
+                if !self.onHide {
+                    if newIndex >= 0 {
+                        self.items.insert(item, at: newIndex)
+                        self.tableView.moveRow(at: IndexPath(row: index, section: 0), to: IndexPath(row: newIndex, section: 0))
+                    } else {
+                        self.items.append(item)
+                        self.tableView.moveRow(at: IndexPath(row: index, section: 0), to: IndexPath(row: items.count - 1, section: 0))
+                    }
+                }
+            } else {
+                self.checkedItems.removeAll {
+                    $0.id == item.id
+                }
+                let newIndex = self.checkedStartIndex >= 1 ? self.checkedStartIndex - 1 : 0
+                self.items.removeAll { $0.id == item.id }
+                self.items.insert(item, at: newIndex)
+                self.tableView.moveRow(at: IndexPath(row: index, section: 0), to: IndexPath(row: newIndex, section: 0))
+            }
+            self.updateIndices()
+            self.tappedCells.removeValue(forKey: item.id!)
+        }
+        
+        tappedCells[item.id!] = timer
     }
     
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
@@ -79,25 +126,22 @@ class TodoListViewController: UITableViewController, UITableViewDragDelegate {
     }
     
     override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        let newIndex = Int(displayItems[destinationIndexPath.row].index)
-        let mover = displayItems.remove(at: sourceIndexPath.row)
-        displayItems.insert(mover, at: destinationIndexPath.row)
+        let item = items[sourceIndexPath.row]
         
-        if onHide {
-            let fromIndex = Int(mover.index)
-            let mover = allItems.remove(at: fromIndex)
-            allItems.insert(mover, at: newIndex)
+        if onHide || (item.done && destinationIndexPath.row >= checkedStartIndex)
+            || (!item.done && destinationIndexPath.row < checkedStartIndex) {
+            let mover = items.remove(at: sourceIndexPath.row)
+            items.insert(mover, at: destinationIndexPath.row)
+            updateIndices()
         } else {
-            allItems = displayItems
+            tableView.reloadData()
         }
-        
-        updateIndices()
     }
     
     //MARK: - Tableview drag delegate methods
     func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
         let dragItem = UIDragItem(itemProvider: NSItemProvider())
-        dragItem.localObject = displayItems[indexPath.row]
+        dragItem.localObject = items[indexPath.row]
         return [dragItem]
     }
     
@@ -113,9 +157,9 @@ class TodoListViewController: UITableViewController, UITableViewDragDelegate {
         }
         
         do {
-            let items = try context.fetch(request)
-            allItems = items.sorted(by: { $0.index < $1.index })
-            displayItems = allItems
+            let allItems = try context.fetch(request)
+            items = allItems.sorted(by: { $0.index < $1.index })
+            checkedItems = items.filter{ $0.done }
         } catch {
             print("Error fetching data from context: \(error)")
         }
@@ -128,27 +172,31 @@ class TodoListViewController: UITableViewController, UITableViewDragDelegate {
         } catch {
             print("Error saving context \(error)")
         }
-        
-        self.tableView.reloadData()
     }
     
     func deleteItem(at index: Int){
         
-        context.delete(displayItems[index])
-        if onHide {
-            let mainIndex = Int(displayItems[index].index)
-            print("mainIndex is: \(mainIndex)")
-            allItems.remove(at: mainIndex)
+        let item = items[index]
+        context.delete(items[index])
+        items.remove(at: index)
+        
+        if item.done {
+            checkedItems.removeAll { $0.id == item.id
+            }
         }
-        displayItems.remove(at: index)
-        updateIndices()
         
         saveItems()
+        tableView.reloadData()
+        updateIndices()
     }
     
     func updateIndices(){
-        for i in 0..<allItems.count {
-            allItems[i].index = Int16(i)
+        var allItems: [Item] = items
+        if onHide {
+            allItems.append(contentsOf: checkedItems)
+        }
+        for i in 0..<items.count {
+            items[i].index = Int16(i)
         }
         saveItems()
     }
@@ -193,11 +241,15 @@ class TodoListViewController: UITableViewController, UITableViewDragDelegate {
                 let newItem = Item(context: self.context)
                 newItem.title = textField.text!
                 newItem.done = false
-                newItem.index = Int16(self.allItems.count)
+                newItem.id = UUID()
+                let newIndex = self.checkedStartIndex >= 0 ? self.checkedStartIndex : 0
+                newItem.index = Int16(newIndex)
                 newItem.parentCategory = self.parentCategory
-                self.displayItems.append(newItem)
-                self.allItems.append(newItem)
+                
+                self.items.insert(newItem, at: newIndex)
                 self.saveItems()
+                self.tableView.reloadData()
+                self.updateIndices()
             }
         }
         alert.addAction(action)
@@ -211,26 +263,25 @@ class TodoListViewController: UITableViewController, UITableViewDragDelegate {
     
     func show(){
         onHide = false
-        displayItems = allItems//.sorted(by: { $0.index < $1.index })
+        items.append(contentsOf: checkedItems)
         tableView.reloadData()
     }
     
     func hide(){
         onHide = true
-        displayItems = allItems.filter{ !$0.done }
+        items = items.filter{ !$0.done }
         tableView.reloadData()
     }
     
     func clear(from startIndex: Int = 0){
-//        if startIndex >= allItems.count {
-//            return
-//        }
-//
-//        for i in startIndex ..< allItems.count {
-//            if allItems[i].done {
-//                deleteItem(at: i)
-//                clear(from: i)
-//            }
-//        }
+        if !onHide {
+            items = items.filter{ !$0.done }
+        }
+        for item in checkedItems {
+            context.delete(item)
+        }
+        saveItems()
+        checkedItems = []
+        tableView.reloadData()
     }
 }
