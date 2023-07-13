@@ -134,7 +134,10 @@ class TodoListViewController: UITableViewController, UITableViewDragDelegate {
             items.insert(mover, at: destinationIndexPath.row)
             updateIndices()
         } else {
-            tableView.reloadData()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.2){
+                tableView.moveRow(at: destinationIndexPath, to: sourceIndexPath)
+            }
+            
         }
     }
     
