@@ -4,9 +4,64 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Create View Controller-->
+        <scene sceneID="sD9-zf-rsO">
+            <objects>
+                <viewController id="fYE-eR-YAt" customClass="CreateViewController" customModule="MonkeyDo" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="uTK-Ps-mTD">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="33" translatesAutoresizingMaskIntoConstraints="NO" id="RRd-vH-nWA">
+                                <rect key="frame" x="95" y="377.66666666666669" width="203" height="97"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to MonkeyDo" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4e5-Zc-E5S">
+                                        <rect key="frame" x="0.0" y="0.0" width="203" height="24"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <color key="textColor" name="WhiteTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jtu-eZ-Gid">
+                                        <rect key="frame" x="16.666666666666671" y="57" width="170" height="40"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="RE4-8V-6md"/>
+                                            <constraint firstAttribute="width" constant="170" id="X2G-Nk-pVy"/>
+                                        </constraints>
+                                        <color key="tintColor" name="PinkColor"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="Create My First List">
+                                            <color key="titleColor" name="PinkColor"/>
+                                            <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="createButtonClicked:" destination="fYE-eR-YAt" eventType="touchUpInside" id="j2y-9j-fPg"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="iNS-8r-VVD"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="RRd-vH-nWA" firstAttribute="centerX" secondItem="uTK-Ps-mTD" secondAttribute="centerX" id="QqX-04-vqN"/>
+                            <constraint firstItem="RRd-vH-nWA" firstAttribute="centerY" secondItem="uTK-Ps-mTD" secondAttribute="centerY" id="vPk-1M-Irg"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="KlD-PU-b0G"/>
+                    <connections>
+                        <outlet property="createButton" destination="jtu-eZ-Gid" id="vWH-UH-FRA"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="McJ-0X-noc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1534" y="-799"/>
+        </scene>
         <!--MonkeyDo-->
         <scene sceneID="xF6-zl-t0D">
             <objects>
@@ -35,9 +90,16 @@
                     </navigationItem>
                     <connections>
                         <segue destination="lpr-lJ-DPd" kind="show" identifier="GoToList" id="dV5-wH-Lm4"/>
+                        <segue destination="fYE-eR-YAt" kind="show" identifier="GoToCreateView" id="sRc-3v-RcL"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ib6-UC-OZq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <view contentMode="scaleToFill" id="5M3-md-3Vv">
+                    <rect key="frame" x="0.0" y="0.0" width="393" height="44"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <viewLayoutGuide key="safeArea" id="D90-bf-xKt"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                </view>
             </objects>
             <point key="canvasLocation" x="1534" y="-61"/>
         </scene>
@@ -101,8 +163,14 @@
         <namedColor name="BackgroundColor">
             <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <namedColor name="PinkColor">
+            <color red="0.89800000190734863" green="0.41999998688697815" blue="0.73600000143051147" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
         <namedColor name="WhiteTextColor">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

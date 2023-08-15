@@ -19,6 +19,7 @@
 		D3218F422A4EF7B000514ED1 /* TodoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D3218F402A4EF7B000514ED1 /* TodoCell.xib */; };
 		D3218F452A4EF93100514ED1 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3218F432A4EF93100514ED1 /* CategoryCell.swift */; };
 		D3218F462A4EF93100514ED1 /* CategoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D3218F442A4EF93100514ED1 /* CategoryCell.xib */; };
+		D3D05C9C2A8B663F00BA9D15 /* CreateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D05C9B2A8B663F00BA9D15 /* CreateViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		D3218F402A4EF7B000514ED1 /* TodoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TodoCell.xib; sourceTree = "<group>"; };
 		D3218F432A4EF93100514ED1 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		D3218F442A4EF93100514ED1 /* CategoryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryCell.xib; sourceTree = "<group>"; };
+		D3D05C9B2A8B663F00BA9D15 /* CreateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +99,7 @@
 			children = (
 				D3218F382A4EC44400514ED1 /* CategoryViewController.swift */,
 				D3218F3A2A4EC45400514ED1 /* TodoListViewController.swift */,
+				D3D05C9B2A8B663F00BA9D15 /* CreateViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -182,6 +185,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D3D05C9C2A8B663F00BA9D15 /* CreateViewController.swift in Sources */,
 				D3218F392A4EC44400514ED1 /* CategoryViewController.swift in Sources */,
 				D3218F412A4EF7B000514ED1 /* TodoCell.swift in Sources */,
 				D3218F202A4EC31000514ED1 /* AppDelegate.swift in Sources */,

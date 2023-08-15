@@ -16,15 +16,20 @@ class CategoryViewController: UITableViewController, UITableViewDragDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadCategories()
+
         tableView.register(UINib(nibName: "CategoryCell", bundle: nil), forCellReuseIdentifier: "CategoryCell")
         tableView.dragDelegate = self
         tableView.dragInteractionEnabled = true
+        
         //for debug
-        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
+        //print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        loadCategories()
+        if categories.isEmpty {
+            performSegue(withIdentifier: "GoToCreateView", sender: self)
+        }
         tableView.reloadData()
     }
 
@@ -47,18 +52,20 @@ class CategoryViewController: UITableViewController, UITableViewDragDelegate {
         return cell
     }
     
+    // MARK: - Navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "GoToList" {
+            let destinationVC = segue.destination as! TodoListViewController
+            if let indexPath = tableView.indexPathForSelectedRow {
+                destinationVC.parentCategory = categories[indexPath.row]
+            }
+        }
+    }
     
     // MARK: - Table view delegate methods
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: "GoToList", sender: self)
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let destinationVC = segue.destination as! TodoListViewController
-        if let indexPath = tableView.indexPathForSelectedRow {
-            destinationVC.parentCategory = categories[indexPath.row]
-        }
     }
     
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
@@ -91,8 +98,8 @@ class CategoryViewController: UITableViewController, UITableViewDragDelegate {
     
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         var textField = UITextField()
-        let alert = UIAlertController(title: "Add new category", message: "", preferredStyle: .alert)
-        let action = UIAlertAction(title: "Add category", style: .default){ _ in
+        let alert = UIAlertController(title: "Add new list", message: "", preferredStyle: .alert)
+        let action = UIAlertAction(title: "Add list", style: .default){ _ in
             if !textField.text!.isEmpty {
                 let newCategory = Category(context: self.context)
                 newCategory.name = textField.text!
@@ -105,7 +112,7 @@ class CategoryViewController: UITableViewController, UITableViewDragDelegate {
         }
         alert.addAction(action)
         alert.addTextField{ (alertTextField) in
-            alertTextField.placeholder = "Add new Category"
+            alertTextField.placeholder = "list name"
             alertTextField.autocapitalizationType = .sentences
             textField = alertTextField
         }

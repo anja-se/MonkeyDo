@@ -258,7 +258,8 @@ class TodoListViewController: UITableViewController, UITableViewDragDelegate {
         alert.addAction(action)
         alert.addTextField { (alertTextField) in
             alertTextField.placeholder = "Create new item"
-            alertTextField.autocapitalizationType = .sentences
+            textField.autocapitalizationType = .words
+            alertTextField.autocorrectionType = .yes
             textField = alertTextField
         }
         present(alert, animated: true, completion: nil)

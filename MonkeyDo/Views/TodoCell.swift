@@ -27,6 +27,4 @@ class TodoCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
         checkImgView.isHidden = checked ? false : true
     }
-    
-    
 }
