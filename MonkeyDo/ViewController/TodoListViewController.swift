@@ -236,13 +236,15 @@ class TodoListViewController: UITableViewController, UITableViewDragDelegate {
     // MARK: - Add, clear, show, hide
     @IBAction func addButtonClicked(_ sender: UIBarButtonItem) {
         var textField = UITextField()
-        
+        var allItemNames = items.map { $0.title }
         let alert = UIAlertController(title: "Add New Todo Item", message: "", preferredStyle: .alert)
+        
         let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
-            if !textField.text!.isEmpty {
-                
+            let itemTitle = textField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+            
+            if !itemTitle.isEmpty && !allItemNames.contains(itemTitle) {
                 let newItem = Item(context: self.context)
-                newItem.title = textField.text!
+                newItem.title = itemTitle
                 newItem.done = false
                 newItem.id = UUID()
                 let newIndex = self.checkedStartIndex >= 0 ? self.checkedStartIndex : 0

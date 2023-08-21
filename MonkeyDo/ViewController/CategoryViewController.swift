@@ -97,11 +97,15 @@ class CategoryViewController: UITableViewController, UITableViewDragDelegate {
     
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         var textField = UITextField()
+        let listNames = categories.map { $0.name }
         let alert = UIAlertController(title: "Add new list", message: "", preferredStyle: .alert)
+        
         let action = UIAlertAction(title: "Add list", style: .default){ _ in
-            if !textField.text!.isEmpty {
+            let newListName = textField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+            
+            if !newListName.isEmpty && !listNames.contains(newListName){
                 let newCategory = Category(context: self.context)
-                newCategory.name = textField.text!
+                newCategory.name = newListName
                 let color = self.getColor()
                 newCategory.color = color
                 newCategory.index = Int16(self.categories.count)
