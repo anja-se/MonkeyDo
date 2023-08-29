@@ -8,19 +8,27 @@
 import UIKit
 import CoreData
 
-class CategoryViewController: UITableViewController, UITableViewDragDelegate {
+class CategoryViewController: UITableViewController, UITableViewDragDelegate, UITextFieldDelegate, ColorDelegate {
+    @IBOutlet weak var clearView: UIView!
     
     var categories = [Category]()
     let colors = ["BlueColor", "PinkColor", "YellowColor", "PurpleColor", "MintColor"]
+    var onEdit = false
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    var focusedTextField: UITextField?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         tableView.register(UINib(nibName: "CategoryCell", bundle: nil), forCellReuseIdentifier: "CategoryCell")
+        tableView.register(UINib(nibName: "EditCategoryCell", bundle: nil), forCellReuseIdentifier: "EditCategoryCell")
         tableView.dragDelegate = self
         tableView.dragInteractionEnabled = true
         
+        //Unfocus textfield when tapped below table
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(defocus))
+        clearView.addGestureRecognizer(tap)
+                
         //for debug
         //print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
     }
@@ -32,7 +40,7 @@ class CategoryViewController: UITableViewController, UITableViewDragDelegate {
         }
         tableView.reloadData()
     }
-
+    
     // MARK: - Tableview datasource methods
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -41,30 +49,31 @@ class CategoryViewController: UITableViewController, UITableViewDragDelegate {
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath) as! CategoryCell
-        cell.label.text = categories[indexPath.row].name
-        if let color = categories[indexPath.row].color {
-            cell.numView.backgroundColor = UIColor(named: color)
-        }
-        let numItems = categories[indexPath.row].items?.count ?? 0
-        cell.numLabel.text = String(numItems)
-
-        return cell
-    }
-    
-    // MARK: - Navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "GoToList" {
-            let destinationVC = segue.destination as! TodoListViewController
-            if let indexPath = tableView.indexPathForSelectedRow {
-                destinationVC.parentCategory = categories[indexPath.row]
+        var cell = CategoryCell()
+        if !onEdit {
+            cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath) as! CategoryCell
+            cell.label.text = categories[indexPath.row].name
+            if let color = categories[indexPath.row].color {
+                cell.numView.backgroundColor = UIColor(named: color)
             }
+            let numItems = categories[indexPath.row].items?.count ?? 0
+            cell.numLabel.text = String(numItems)
         }
+        else {
+            let editCell = tableView.dequeueReusableCell(withIdentifier: "EditCategoryCell", for: indexPath) as! EditCategoryCell
+            editCell.configure(category: categories[indexPath.row])
+            editCell.delegate = self
+            editCell.categoryTextField.delegate = self
+            return editCell
+        }
+        return cell
     }
     
     // MARK: - Table view delegate methods
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "GoToList", sender: self)
+        if !onEdit {
+            performSegue(withIdentifier: "GoToList", sender: self)
+        }
     }
     
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
@@ -86,6 +95,28 @@ class CategoryViewController: UITableViewController, UITableViewDragDelegate {
         saveCategories()
     }
     
+    //MARK: - Textfield delegate methods
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        focusedTextField = textField
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textFieldDidEndEditing(textField)
+        focusedTextField = nil
+        return true
+    }
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if  let id = textField.accessibilityIdentifier,
+            let index = Int(id),
+            let newText = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines) {
+            changeCategory(index: index, text: newText)
+        }
+        view.endEditing(true)
+    }
+
+    
     //MARK: - Tableview drag delegate methods
     func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
         let dragItem = UIDragItem(itemProvider: NSItemProvider())
@@ -93,7 +124,17 @@ class CategoryViewController: UITableViewController, UITableViewDragDelegate {
         return [dragItem]
     }
     
-    // MARK: - Add new categories
+    // MARK: - Navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "GoToList" {
+            let destinationVC = segue.destination as! TodoListViewController
+            if let indexPath = tableView.indexPathForSelectedRow {
+                destinationVC.parentCategory = categories[indexPath.row]
+            }
+        }
+    }
+    
+    //MARK: - Button Function
     
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         var textField = UITextField()
@@ -122,18 +163,9 @@ class CategoryViewController: UITableViewController, UITableViewDragDelegate {
         present(alert, animated: true)
     }
     
-    func getColor() -> String {
-        let range = categories.isEmpty ? 0...4 : 0...3
-        let randomIndex = Int.random(in: range)
-        
-        if categories.isEmpty {
-            return colors[randomIndex]
-        } else {
-            let colors = self.colors.filter { color in
-                color != categories.last?.color
-            }
-            return colors[randomIndex]
-        }
+    @IBAction func editButtonClicked(_ sender: UIBarButtonItem) {
+        onEdit.toggle()
+        tableView.reloadData()
     }
     
     
@@ -158,9 +190,38 @@ class CategoryViewController: UITableViewController, UITableViewDragDelegate {
         tableView.reloadData()
     }
     
+    func changeCategory(index: Int, text: String){
+        categories[index].name = text
+        saveCategories()
+    }
+    
+    func changeColor(index: Int, color: String){
+        categories[index].color = color
+        saveCategories()
+    }
+    
     func deleteCategory(at index: Int){
         context.delete(categories[index])
         categories.remove(at: index)
         saveCategories()
+    }
+    
+    //MARK: - Helper methods
+    func getColor() -> String {
+        let range = categories.isEmpty ? 0...4 : 0...3
+        let randomIndex = Int.random(in: range)
+        
+        if categories.isEmpty {
+            return colors[randomIndex]
+        } else {
+            let colors = self.colors.filter { color in
+                color != categories.last?.color
+            }
+            return colors[randomIndex]
+        }
+    }
+    
+    @objc func defocus() {
+        focusedTextField?.endEditing(true)
     }
 }

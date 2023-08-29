@@ -74,6 +74,12 @@
                         <color key="separatorColor" name="WhiteTextColor"/>
                         <color key="sectionIndexColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="sectionIndexBackgroundColor" name="BackgroundColor"/>
+                        <view key="tableFooterView" contentMode="scaleToFill" id="9OW-yh-hKD" userLabel="ClearView">
+                            <rect key="frame" x="0.0" y="0.0" width="393" height="819"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </view>
                         <connections>
                             <outlet property="dataSource" destination="9oP-bi-fgH" id="0cQ-c5-3hu"/>
                             <outlet property="delegate" destination="9oP-bi-fgH" id="7B3-Zt-xQZ"/>
@@ -81,14 +87,23 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="MonkeyDo" id="Bt1-8R-Kdn">
                         <barButtonItem key="backBarButtonItem" title="All" id="M9B-XB-bbk"/>
-                        <barButtonItem key="rightBarButtonItem" title="Add" image="plus" catalog="system" id="oyT-mG-RFW">
-                            <color key="tintColor" red="0.89800000189999996" green="0.41990566639999999" blue="0.73640899849999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                            <connections>
-                                <action selector="addButtonPressed:" destination="9oP-bi-fgH" id="ffv-Pg-m8y"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem title="Add" image="plus" catalog="system" id="oyT-mG-RFW">
+                                <color key="tintColor" red="0.89800000189999996" green="0.41990566639999999" blue="0.73640899849999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <connections>
+                                    <action selector="addButtonPressed:" destination="9oP-bi-fgH" id="ffv-Pg-m8y"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Edit" image="pencil" catalog="system" id="eiE-yG-vfv">
+                                <color key="tintColor" name="PinkColor"/>
+                                <connections>
+                                    <action selector="editButtonClicked:" destination="9oP-bi-fgH" id="NJs-HU-gfu"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
+                        <outlet property="clearView" destination="9OW-yh-hKD" id="UfF-Cd-53x"/>
                         <segue destination="lpr-lJ-DPd" kind="show" identifier="GoToList" id="dV5-wH-Lm4"/>
                         <segue destination="fYE-eR-YAt" kind="show" identifier="GoToCreateView" id="sRc-3v-RcL"/>
                     </connections>
@@ -166,6 +181,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="pencil" catalog="system" width="128" height="113"/>
         <image name="plus" catalog="system" width="128" height="113"/>
         <namedColor name="BackgroundColor">
             <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

@@ -332,7 +332,7 @@ class TodoListViewController: UITableViewController, UITableViewDragDelegate, UI
         tableView.reloadData()
     }
     
-    
+    //MARK: - Helper Methods
     @objc func defocus() {
         focusedTextField?.endEditing(true)
     }

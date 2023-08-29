@@ -20,6 +20,8 @@
 		D3218F452A4EF93100514ED1 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3218F432A4EF93100514ED1 /* CategoryCell.swift */; };
 		D3218F462A4EF93100514ED1 /* CategoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D3218F442A4EF93100514ED1 /* CategoryCell.xib */; };
 		D32E047E2A9E07FE00360483 /* CustomTableTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D32E047D2A9E07FE00360483 /* CustomTableTableViewController.swift */; };
+		D32E04812A9E25CB00360483 /* EditCategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D32E047F2A9E25CB00360483 /* EditCategoryCell.swift */; };
+		D32E04822A9E25CB00360483 /* EditCategoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D32E04802A9E25CB00360483 /* EditCategoryCell.xib */; };
 		D3D05C9C2A8B663F00BA9D15 /* CreateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D05C9B2A8B663F00BA9D15 /* CreateViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -39,6 +41,8 @@
 		D3218F432A4EF93100514ED1 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		D3218F442A4EF93100514ED1 /* CategoryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryCell.xib; sourceTree = "<group>"; };
 		D32E047D2A9E07FE00360483 /* CustomTableTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableTableViewController.swift; sourceTree = "<group>"; };
+		D32E047F2A9E25CB00360483 /* EditCategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCategoryCell.swift; sourceTree = "<group>"; };
+		D32E04802A9E25CB00360483 /* EditCategoryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditCategoryCell.xib; sourceTree = "<group>"; };
 		D3D05C9B2A8B663F00BA9D15 /* CreateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -93,6 +97,8 @@
 				D3218F402A4EF7B000514ED1 /* TodoCell.xib */,
 				D3218F432A4EF93100514ED1 /* CategoryCell.swift */,
 				D3218F442A4EF93100514ED1 /* CategoryCell.xib */,
+				D32E047F2A9E25CB00360483 /* EditCategoryCell.swift */,
+				D32E04802A9E25CB00360483 /* EditCategoryCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -176,6 +182,7 @@
 				D3218F462A4EF93100514ED1 /* CategoryCell.xib in Resources */,
 				D3218F2F2A4EC31100514ED1 /* LaunchScreen.storyboard in Resources */,
 				D3218F2C2A4EC31100514ED1 /* Assets.xcassets in Resources */,
+				D32E04822A9E25CB00360483 /* EditCategoryCell.xib in Resources */,
 				D3218F272A4EC31000514ED1 /* Main.storyboard in Resources */,
 				D3218F422A4EF7B000514ED1 /* TodoCell.xib in Resources */,
 			);
@@ -193,6 +200,7 @@
 				D3218F412A4EF7B000514ED1 /* TodoCell.swift in Sources */,
 				D3218F202A4EC31000514ED1 /* AppDelegate.swift in Sources */,
 				D3218F452A4EF93100514ED1 /* CategoryCell.swift in Sources */,
+				D32E04812A9E25CB00360483 /* EditCategoryCell.swift in Sources */,
 				D3218F222A4EC31000514ED1 /* SceneDelegate.swift in Sources */,
 				D3218F2A2A4EC31000514ED1 /* DataModel.xcdatamodeld in Sources */,
 				D32E047E2A9E07FE00360483 /* CustomTableTableViewController.swift in Sources */,
