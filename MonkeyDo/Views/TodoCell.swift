@@ -10,9 +10,9 @@ import UIKit
 class TodoCell: UITableViewCell {
 
     @IBOutlet weak var cellView: UIView!
-    @IBOutlet weak var label: UILabel!
     @IBOutlet weak var checkView: UIView!
     @IBOutlet weak var checkImgView: UIImageView!
+    @IBOutlet weak var todoTextField: UITextField!
     var checked = false
     
     override func awakeFromNib() {

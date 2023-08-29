@@ -8,8 +8,10 @@
 import UIKit
 import CoreData
 
-class TodoListViewController: UITableViewController, UITableViewDragDelegate {
+class TodoListViewController: UITableViewController, UITableViewDragDelegate, UITextFieldDelegate {
     @IBOutlet weak var addButton: UIBarButtonItem!
+    
+    @IBOutlet weak var clearView: UIView!
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     var items = [Item]()
@@ -30,12 +32,18 @@ class TodoListViewController: UITableViewController, UITableViewDragDelegate {
     var showAction = UIAction(){_ in }
     var clearAction = UIAction(){_ in }
     var tappedCells: [UUID: Timer] = [:]
+    var focusedTextField: UITextField?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         tableView.register(UINib(nibName: "TodoCell", bundle: nil), forCellReuseIdentifier: "TodoCell")
         tableView.dragDelegate = self
         tableView.dragInteractionEnabled = true
+        
+        //Unfocus textfield when tapped below table
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(defocus))
+        clearView.addGestureRecognizer(tap)
         
         setupBar()
     }
@@ -44,12 +52,14 @@ class TodoListViewController: UITableViewController, UITableViewDragDelegate {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TodoCell", for: indexPath) as! TodoCell
         let item = items[indexPath.row]
-        cell.label.text = item.title
+        cell.todoTextField.text = item.title
         cell.checked = item.done ? true : false
         if let color = parentCategory?.color {
             cell.cellView.backgroundColor = UIColor(named: color)
         }
         cell.cellView.layer.opacity = item.done ? 0.8 : 1.0
+        cell.todoTextField.accessibilityIdentifier = item.id?.uuidString
+        cell.todoTextField.delegate = self
     
         return cell
     }
@@ -141,6 +151,28 @@ class TodoListViewController: UITableViewController, UITableViewDragDelegate {
         }
     }
     
+    //MARK: - Textfield delegate methods
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        focusedTextField = textField
+    }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if  let id = textField.accessibilityIdentifier,
+            let newText = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines) {
+            changeItem(id: id, text: newText)
+        }
+        view.endEditing(true)
+        return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if  let id = textField.accessibilityIdentifier,
+            let newText = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines) {
+            changeItem(id: id, text: newText)
+        }
+        view.endEditing(true)
+    }
+    
     //MARK: - Tableview drag delegate methods
     func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
         let dragItem = UIDragItem(itemProvider: NSItemProvider())
@@ -175,6 +207,15 @@ class TodoListViewController: UITableViewController, UITableViewDragDelegate {
         } catch {
             print("Error saving context \(error)")
         }
+    }
+    
+    func changeItem(id: String, text: String) {
+        if !text.isEmpty {
+            let itemToChange = items.first { $0.id?.uuidString == id}
+            itemToChange?.title = text
+            saveItems()
+        }
+        tableView.reloadData()
     }
     
     func deleteItem(at index: Int){
@@ -289,5 +330,10 @@ class TodoListViewController: UITableViewController, UITableViewDragDelegate {
         saveItems()
         checkedItems = []
         tableView.reloadData()
+    }
+    
+    
+    @objc func defocus() {
+        focusedTextField?.endEditing(true)
     }
 }

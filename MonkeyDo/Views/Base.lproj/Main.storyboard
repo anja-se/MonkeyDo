@@ -136,6 +136,12 @@
                         <color key="backgroundColor" name="BackgroundColor"/>
                         <color key="separatorColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="sectionIndexBackgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <view key="tableFooterView" contentMode="scaleToFill" id="7hu-OO-JcC" userLabel="ClearView">
+                            <rect key="frame" x="0.0" y="0.0" width="393" height="819"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </view>
                         <connections>
                             <outlet property="dataSource" destination="lpr-lJ-DPd" id="Djn-ve-Dol"/>
                             <outlet property="delegate" destination="lpr-lJ-DPd" id="yuS-UE-x17"/>
@@ -151,11 +157,12 @@
                     </navigationItem>
                     <connections>
                         <outlet property="addButton" destination="vsJ-1G-gH7" id="k3P-JN-7NR"/>
+                        <outlet property="clearView" destination="7hu-OO-JcC" id="2xX-I0-IGi"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="S4u-yR-y5L" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2292" y="-61"/>
+            <point key="canvasLocation" x="2290.8396946564885" y="-61.267605633802823"/>
         </scene>
     </scenes>
     <resources>

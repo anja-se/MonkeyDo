@@ -19,6 +19,7 @@
 		D3218F422A4EF7B000514ED1 /* TodoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D3218F402A4EF7B000514ED1 /* TodoCell.xib */; };
 		D3218F452A4EF93100514ED1 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3218F432A4EF93100514ED1 /* CategoryCell.swift */; };
 		D3218F462A4EF93100514ED1 /* CategoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D3218F442A4EF93100514ED1 /* CategoryCell.xib */; };
+		D32E047E2A9E07FE00360483 /* CustomTableTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D32E047D2A9E07FE00360483 /* CustomTableTableViewController.swift */; };
 		D3D05C9C2A8B663F00BA9D15 /* CreateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D05C9B2A8B663F00BA9D15 /* CreateViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -37,6 +38,7 @@
 		D3218F402A4EF7B000514ED1 /* TodoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TodoCell.xib; sourceTree = "<group>"; };
 		D3218F432A4EF93100514ED1 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		D3218F442A4EF93100514ED1 /* CategoryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryCell.xib; sourceTree = "<group>"; };
+		D32E047D2A9E07FE00360483 /* CustomTableTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableTableViewController.swift; sourceTree = "<group>"; };
 		D3D05C9B2A8B663F00BA9D15 /* CreateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -72,6 +74,7 @@
 			children = (
 				D3218F1F2A4EC31000514ED1 /* AppDelegate.swift */,
 				D3218F212A4EC31000514ED1 /* SceneDelegate.swift */,
+				D32E047D2A9E07FE00360483 /* CustomTableTableViewController.swift */,
 				D3218F3C2A4EDECB00514ED1 /* DataModel */,
 				D3218F372A4EC43300514ED1 /* ViewController */,
 				D3218F362A4EC31C00514ED1 /* Views */,
@@ -192,6 +195,7 @@
 				D3218F452A4EF93100514ED1 /* CategoryCell.swift in Sources */,
 				D3218F222A4EC31000514ED1 /* SceneDelegate.swift in Sources */,
 				D3218F2A2A4EC31000514ED1 /* DataModel.xcdatamodeld in Sources */,
+				D32E047E2A9E07FE00360483 /* CustomTableTableViewController.swift in Sources */,
 				D3218F3B2A4EC45500514ED1 /* TodoListViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -337,6 +341,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = AD68QC49BY;
@@ -351,8 +356,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = anjaseidel.MonkeyDo;
+				PRODUCT_BUNDLE_IDENTIFIER = anjaseidel.MonkeyDoApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -364,6 +370,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = AD68QC49BY;
@@ -378,8 +385,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = anjaseidel.MonkeyDo;
+				PRODUCT_BUNDLE_IDENTIFIER = anjaseidel.MonkeyDoApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

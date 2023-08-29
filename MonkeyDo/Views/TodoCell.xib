@@ -20,12 +20,13 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Iz7-2o-UnG">
                         <rect key="frame" x="0.0" y="5" width="317" height="50"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="Ufg-SR-LYg">
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="hWe-nt-bW5">
                                 <rect key="frame" x="16" y="8" width="237" height="34"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="textColor" name="WhiteTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DrU-cx-BmC" userLabel="CheckView">
                                 <rect key="frame" x="269" y="2.6666666666666679" width="45" height="45"/>
                                 <subviews>
@@ -49,14 +50,13 @@
                         </subviews>
                         <color key="backgroundColor" red="0.89800000189999996" green="0.41990566639999999" blue="0.73640899849999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
-                            <constraint firstItem="Ufg-SR-LYg" firstAttribute="leading" secondItem="Iz7-2o-UnG" secondAttribute="leading" constant="16" id="1eQ-Pq-TmL"/>
-                            <constraint firstItem="Ufg-SR-LYg" firstAttribute="top" secondItem="Iz7-2o-UnG" secondAttribute="top" constant="8" id="8pO-VD-36d"/>
+                            <constraint firstItem="DrU-cx-BmC" firstAttribute="leading" secondItem="hWe-nt-bW5" secondAttribute="trailing" constant="16" id="5gL-KR-hoA"/>
                             <constraint firstAttribute="trailing" secondItem="DrU-cx-BmC" secondAttribute="trailing" constant="3" id="Duk-uU-3oe"/>
+                            <constraint firstItem="hWe-nt-bW5" firstAttribute="top" secondItem="Iz7-2o-UnG" secondAttribute="top" constant="8" id="Fs3-TV-Y4O"/>
+                            <constraint firstItem="hWe-nt-bW5" firstAttribute="leading" secondItem="Iz7-2o-UnG" secondAttribute="leading" constant="16" id="JkR-l3-B6L"/>
                             <constraint firstItem="DrU-cx-BmC" firstAttribute="centerY" secondItem="Iz7-2o-UnG" secondAttribute="centerY" id="WSt-Jm-4jf"/>
-                            <constraint firstItem="DrU-cx-BmC" firstAttribute="leading" secondItem="Ufg-SR-LYg" secondAttribute="trailing" constant="16" id="hZF-qz-NaU"/>
-                            <constraint firstItem="Ufg-SR-LYg" firstAttribute="centerY" secondItem="Iz7-2o-UnG" secondAttribute="centerY" id="j3U-sh-ndx"/>
                             <constraint firstAttribute="height" constant="50" id="mNo-pc-Nal"/>
-                            <constraint firstAttribute="bottom" secondItem="Ufg-SR-LYg" secondAttribute="bottom" constant="8" id="sUN-Y9-5BY"/>
+                            <constraint firstAttribute="bottom" secondItem="hWe-nt-bW5" secondAttribute="bottom" constant="8" id="zFD-QC-T4m"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -74,7 +74,7 @@
                 <outlet property="cellView" destination="Iz7-2o-UnG" id="Wox-Ue-Vs1"/>
                 <outlet property="checkImgView" destination="nU0-yW-ABA" id="oTf-o2-74j"/>
                 <outlet property="checkView" destination="DrU-cx-BmC" id="z40-8H-paG"/>
-                <outlet property="label" destination="Ufg-SR-LYg" id="tti-sI-dVe"/>
+                <outlet property="todoTextField" destination="hWe-nt-bW5" id="qXF-ii-yiB"/>
             </connections>
             <point key="canvasLocation" x="47.328244274809158" y="28.52112676056338"/>
         </tableViewCell>
