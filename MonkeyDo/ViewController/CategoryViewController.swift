@@ -223,5 +223,9 @@ class CategoryViewController: UITableViewController, UITableViewDragDelegate, UI
     
     @objc func defocus() {
         focusedTextField?.endEditing(true)
+        if onEdit {
+            onEdit.toggle()
+            tableView.reloadData()
+        }
     }
 }

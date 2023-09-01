@@ -95,21 +95,34 @@
                                     </button>
                                 </subviews>
                             </stackView>
-                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Category" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ftG-K7-blb">
-                                <rect key="frame" x="16" y="12.33333333333333" width="120" height="25.666666666666671"/>
-                                <color key="textColor" name="WhiteTextColor"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a0x-ON-5Hw">
+                                <rect key="frame" x="16" y="4.3333333333333321" width="120" height="41.666666666666671"/>
+                                <subviews>
+                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Category" placeholder="Category" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ftG-K7-blb">
+                                        <rect key="frame" x="8" y="7.9999999999999982" width="104" height="25.666666666666664"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                </subviews>
+                                <color key="backgroundColor" red="0.99019607840000001" green="1" blue="1" alpha="0.10280422187417217" colorSpace="custom" customColorSpace="displayP3"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="ftG-K7-blb" secondAttribute="bottom" constant="8" id="Mac-x5-Z6Z"/>
+                                    <constraint firstItem="ftG-K7-blb" firstAttribute="leading" secondItem="a0x-ON-5Hw" secondAttribute="leading" constant="8" id="NZr-bo-vDD"/>
+                                    <constraint firstAttribute="trailing" secondItem="ftG-K7-blb" secondAttribute="trailing" constant="8" id="g53-Aj-Cs8"/>
+                                    <constraint firstItem="ftG-K7-blb" firstAttribute="top" secondItem="a0x-ON-5Hw" secondAttribute="top" constant="8" id="xHc-uG-Gtq"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="ftG-K7-blb" firstAttribute="centerY" secondItem="dBK-YN-Z55" secondAttribute="centerY" id="4GA-5Z-JtY"/>
+                            <constraint firstItem="a0x-ON-5Hw" firstAttribute="centerY" secondItem="dBK-YN-Z55" secondAttribute="centerY" id="9F0-o9-eeK"/>
                             <constraint firstItem="CFX-xk-acW" firstAttribute="centerY" secondItem="dBK-YN-Z55" secondAttribute="centerY" id="Iq9-GW-RdK"/>
                             <constraint firstAttribute="height" constant="50" id="QWn-zI-ovq"/>
-                            <constraint firstItem="CFX-xk-acW" firstAttribute="leading" secondItem="ftG-K7-blb" secondAttribute="trailing" constant="16" id="gtR-en-quU"/>
+                            <constraint firstItem="CFX-xk-acW" firstAttribute="leading" secondItem="a0x-ON-5Hw" secondAttribute="trailing" constant="16" id="TEf-et-WJy"/>
+                            <constraint firstItem="a0x-ON-5Hw" firstAttribute="leading" secondItem="dBK-YN-Z55" secondAttribute="leading" constant="16" id="hJ7-m1-eS5"/>
                             <constraint firstAttribute="trailing" secondItem="CFX-xk-acW" secondAttribute="trailing" id="hTg-qR-sad"/>
-                            <constraint firstItem="ftG-K7-blb" firstAttribute="leading" secondItem="dBK-YN-Z55" secondAttribute="leading" constant="16" id="qyh-19-sIc"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -129,6 +142,7 @@
                 <outlet property="mintButton" destination="jku-qf-X36" id="1EA-4R-Swn"/>
                 <outlet property="pinkButton" destination="va9-X2-eMz" id="1tq-xi-1w2"/>
                 <outlet property="purpleButton" destination="EBx-t7-ERR" id="Tr0-J1-tdK"/>
+                <outlet property="textFieldContainerView" destination="a0x-ON-5Hw" id="GmT-vu-D2Q"/>
                 <outlet property="yellowButton" destination="uFd-ir-bvd" id="trX-QH-BTB"/>
             </connections>
             <point key="canvasLocation" x="16.793893129770993" y="-45.422535211267608"/>
@@ -149,9 +163,6 @@
         </namedColor>
         <namedColor name="PurpleColor">
             <color red="0.52399998903274536" green="0.18299999833106995" blue="0.93000000715255737" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-        </namedColor>
-        <namedColor name="WhiteTextColor">
-            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="YellowColor">
             <color red="0.93800002336502075" green="0.68500000238418579" blue="0.19499999284744263" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>

@@ -10,6 +10,7 @@ import UIKit
 class EditCategoryCell: UITableViewCell {
     
     @IBOutlet weak var categoryTextField: UITextField!
+    @IBOutlet weak var textFieldContainerView: UIView!
     @IBOutlet weak var blueButton: UIButton!
     @IBOutlet weak var purpleButton: UIButton!
     @IBOutlet weak var pinkButton: UIButton!
@@ -31,6 +32,7 @@ class EditCategoryCell: UITableViewCell {
     }
     
     func layout(){
+        textFieldContainerView.layer.cornerRadius = 8
         for view in allButtons {
             view.layer.cornerRadius = view.frame.height / 2
             view.layer.borderColor = UIColor(white: 0, alpha: 0.5).cgColor
