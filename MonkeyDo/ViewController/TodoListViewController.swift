@@ -10,7 +10,7 @@ import CoreData
 
 class TodoListViewController: UITableViewController, UITableViewDragDelegate, UITextFieldDelegate {
     @IBOutlet weak var addButton: UIBarButtonItem!
-    
+    @IBOutlet weak var emptyButtonView: UIView!
     @IBOutlet weak var clearView: UIView!
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -34,6 +34,8 @@ class TodoListViewController: UITableViewController, UITableViewDragDelegate, UI
     var tappedCells: [UUID: Timer] = [:]
     var focusedTextField: UITextField?
     
+    
+    //MARK: - Life cycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -46,9 +48,16 @@ class TodoListViewController: UITableViewController, UITableViewDragDelegate, UI
         clearView.addGestureRecognizer(tap)
         
         setupBar()
+        layout()
     }
     
-    //MARK: - Tableview datasource methods
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        shouldDisplayButton()
+    }
+    
+    //MARK: - Tableview methods
+    //datasource methods
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TodoCell", for: indexPath) as! TodoCell
         let item = items[indexPath.row]
@@ -68,7 +77,7 @@ class TodoListViewController: UITableViewController, UITableViewDragDelegate, UI
         items.count
     }
     
-    // MARK: - Table view delegate methods
+    //Table view delegate methods
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let item = items[indexPath.row]
@@ -151,6 +160,13 @@ class TodoListViewController: UITableViewController, UITableViewDragDelegate, UI
         }
     }
     
+    //drag delegate methods
+    func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+        let dragItem = UIDragItem(itemProvider: NSItemProvider())
+        dragItem.localObject = items[indexPath.row]
+        return [dragItem]
+    }
+    
     //MARK: - Textfield delegate methods
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -171,13 +187,6 @@ class TodoListViewController: UITableViewController, UITableViewDragDelegate, UI
             changeItem(id: id, text: newText)
         }
         view.endEditing(true)
-    }
-    
-    //MARK: - Tableview drag delegate methods
-    func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
-        let dragItem = UIDragItem(itemProvider: NSItemProvider())
-        dragItem.localObject = items[indexPath.row]
-        return [dragItem]
     }
     
     // MARK: - Data manipulation methods
@@ -207,6 +216,7 @@ class TodoListViewController: UITableViewController, UITableViewDragDelegate, UI
         } catch {
             print("Error saving context \(error)")
         }
+        shouldDisplayButton()
     }
     
     func changeItem(id: String, text: String) {
@@ -273,9 +283,20 @@ class TodoListViewController: UITableViewController, UITableViewDragDelegate, UI
         menutItem.menu = menu
     }
     
+    // MARK: - Layout
+    func layout() {
+        emptyButtonView.layer.borderWidth = 2
+        emptyButtonView.layer.borderColor = UIColor(named: "PinkColor")?.cgColor
+        emptyButtonView.layer.cornerRadius = 10
+    }
+    
+    func shouldDisplayButton() {
+        //called in viewWillAppear and saveItems
+        emptyButtonView.isHidden = !items.isEmpty
+    }
     
     // MARK: - Add, clear, show, hide
-    @IBAction func addButtonClicked(_ sender: UIBarButtonItem) {
+    @IBAction func addItem() {
         var textField = UITextField()
         var allItemNames = items.map { $0.title }
         let alert = UIAlertController(title: "Add New Todo Item", message: "", preferredStyle: .alert)

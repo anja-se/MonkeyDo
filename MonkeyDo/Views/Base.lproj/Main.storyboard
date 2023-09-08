@@ -33,6 +33,7 @@
                                             <constraint firstAttribute="height" constant="40" id="RE4-8V-6md"/>
                                             <constraint firstAttribute="width" constant="170" id="X2G-Nk-pVy"/>
                                         </constraints>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
                                         <color key="tintColor" name="PinkColor"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                         <state key="normal" title="Create My First List">
@@ -152,10 +153,40 @@
                         <color key="separatorColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="sectionIndexBackgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <view key="tableFooterView" contentMode="scaleToFill" id="7hu-OO-JcC" userLabel="ClearView">
-                            <rect key="frame" x="0.0" y="0.0" width="393" height="819"/>
+                            <rect key="frame" x="0.0" y="0.0" width="393" height="750"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gpG-5h-v0j">
+                                    <rect key="frame" x="129" y="308" width="135" height="40"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ghL-lG-rAg">
+                                            <rect key="frame" x="10" y="3" width="115" height="34"/>
+                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
+                                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                            <state key="normal" title="Add First Item">
+                                                <color key="titleColor" name="PinkColor"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="addItem" destination="lpr-lJ-DPd" eventType="touchUpInside" id="0wS-sZ-HuV"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstItem="ghL-lG-rAg" firstAttribute="top" secondItem="gpG-5h-v0j" secondAttribute="top" constant="3" id="GMp-BB-wwl"/>
+                                        <constraint firstAttribute="trailing" secondItem="ghL-lG-rAg" secondAttribute="trailing" constant="10" id="Ghx-wa-Bo3"/>
+                                        <constraint firstAttribute="bottom" secondItem="ghL-lG-rAg" secondAttribute="bottom" constant="3" id="dbl-5L-zzd"/>
+                                        <constraint firstItem="ghL-lG-rAg" firstAttribute="leading" secondItem="gpG-5h-v0j" secondAttribute="leading" constant="10" id="pWk-SH-6gF"/>
+                                    </constraints>
+                                </view>
+                            </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="gpG-5h-v0j" firstAttribute="centerY" secondItem="7hu-OO-JcC" secondAttribute="centerY" multiplier="7:8" id="POA-Qr-T0M"/>
+                                <constraint firstItem="gpG-5h-v0j" firstAttribute="centerX" secondItem="7hu-OO-JcC" secondAttribute="centerX" id="dJ5-Lh-BEJ"/>
+                            </constraints>
                         </view>
                         <connections>
                             <outlet property="dataSource" destination="lpr-lJ-DPd" id="Djn-ve-Dol"/>
@@ -166,13 +197,14 @@
                         <barButtonItem key="rightBarButtonItem" title="Add" image="plus" catalog="system" id="vsJ-1G-gH7">
                             <color key="tintColor" red="0.89800000189999996" green="0.41990566639999999" blue="0.73640899849999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             <connections>
-                                <action selector="addButtonClicked:" destination="lpr-lJ-DPd" id="28s-cB-4U1"/>
+                                <action selector="addItem" destination="lpr-lJ-DPd" id="7Qx-P7-kAn"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="addButton" destination="vsJ-1G-gH7" id="k3P-JN-7NR"/>
                         <outlet property="clearView" destination="7hu-OO-JcC" id="2xX-I0-IGi"/>
+                        <outlet property="emptyButtonView" destination="gpG-5h-v0j" id="pM8-1h-ef5"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="S4u-yR-y5L" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

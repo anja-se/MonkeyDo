@@ -17,6 +17,8 @@ class CategoryViewController: UITableViewController, UITableViewDragDelegate, UI
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     var focusedTextField: UITextField?
 
+    
+    //MARK: - Lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -29,7 +31,7 @@ class CategoryViewController: UITableViewController, UITableViewDragDelegate, UI
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(defocus))
         clearView.addGestureRecognizer(tap)
                 
-        //for debug
+        //for debug:
         //print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
     }
     
@@ -41,13 +43,12 @@ class CategoryViewController: UITableViewController, UITableViewDragDelegate, UI
         tableView.reloadData()
     }
     
-    // MARK: - Tableview datasource methods
-
+    // MARK: - Tableview methods
+    // datasource methods
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return categories.count
     }
 
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell = CategoryCell()
         if !onEdit {
@@ -69,7 +70,7 @@ class CategoryViewController: UITableViewController, UITableViewDragDelegate, UI
         return cell
     }
     
-    // MARK: - Table view delegate methods
+    // tableview delegate methods
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if !onEdit {
             performSegue(withIdentifier: "GoToList", sender: self)
@@ -95,8 +96,14 @@ class CategoryViewController: UITableViewController, UITableViewDragDelegate, UI
         saveCategories()
     }
     
-    //MARK: - Textfield delegate methods
+    //drag delegate methods
+    func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+        let dragItem = UIDragItem(itemProvider: NSItemProvider())
+        dragItem.localObject = categories[indexPath.row]
+        return [dragItem]
+    }
     
+    //MARK: - Textfield delegate methods
     func textFieldDidBeginEditing(_ textField: UITextField) {
         focusedTextField = textField
     }
@@ -114,14 +121,6 @@ class CategoryViewController: UITableViewController, UITableViewDragDelegate, UI
             changeCategory(index: index, text: newText)
         }
         view.endEditing(true)
-    }
-
-    
-    //MARK: - Tableview drag delegate methods
-    func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
-        let dragItem = UIDragItem(itemProvider: NSItemProvider())
-        dragItem.localObject = categories[indexPath.row]
-        return [dragItem]
     }
     
     // MARK: - Navigation
@@ -188,6 +187,10 @@ class CategoryViewController: UITableViewController, UITableViewDragDelegate, UI
             print("Error saving context: \(error)")
         }
         tableView.reloadData()
+        
+        if categories.isEmpty {
+            performSegue(withIdentifier: "GoToCreateView", sender: self)
+        }
     }
     
     func changeCategory(index: Int, text: String){
