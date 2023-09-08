@@ -156,7 +156,6 @@ class TodoListViewController: UITableViewController, UITableViewDragDelegate, UI
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.2){
                 tableView.moveRow(at: destinationIndexPath, to: sourceIndexPath)
             }
-            
         }
     }
     
@@ -168,7 +167,6 @@ class TodoListViewController: UITableViewController, UITableViewDragDelegate, UI
     }
     
     //MARK: - Textfield delegate methods
-    
     func textFieldDidBeginEditing(_ textField: UITextField) {
         focusedTextField = textField
     }
@@ -207,7 +205,11 @@ class TodoListViewController: UITableViewController, UITableViewDragDelegate, UI
         } catch {
             print("Error fetching data from context: \(error)")
         }
-        tableView.reloadData()
+        if parentCategory!.hidesCompleted {
+            hide()
+        } else {
+            tableView.reloadData()
+        }
     }
     
     func saveItems() {
@@ -255,18 +257,24 @@ class TodoListViewController: UITableViewController, UITableViewDragDelegate, UI
         saveItems()
     }
     
-    //MARK: - Bar and Menu Configuration
+    func updateCategory() {
+        parentCategory?.hidesCompleted = onHide
+        saveItems()
+    }
     
+    //MARK: - Bar and Menu Configuration
     func setupBar() {
         menutItem.tintColor = UIColor(named: "PinkColor")
         self.navigationItem.rightBarButtonItems = [menutItem, addButton]
         
         hideAction = UIAction(title: "Hide completed", image: UIImage(systemName: "eye.slash")) { action in
             self.hide()
+            self.updateCategory()
             self.updateMenu()
         }
         showAction = UIAction(title: "Show completed", image: UIImage(systemName: "eye")) { action in
             self.show()
+            self.updateCategory()
             self.updateMenu()
         }
         clearAction = UIAction(title: "Clear completed", image: UIImage(systemName: "xmark.circle")) {_ in
@@ -333,6 +341,7 @@ class TodoListViewController: UITableViewController, UITableViewDragDelegate, UI
         onHide = false
         items.append(contentsOf: checkedItems)
         tableView.reloadData()
+        
     }
     
     func hide(){

@@ -57,8 +57,9 @@ class CategoryViewController: UITableViewController, UITableViewDragDelegate, UI
             if let color = categories[indexPath.row].color {
                 cell.numView.backgroundColor = UIColor(named: color)
             }
-            let numItems = categories[indexPath.row].items?.count ?? 0
-            cell.numLabel.text = String(numItems)
+            let category = categories[indexPath.row]
+            let count = getCount(for: category)
+            cell.numLabel.text = String(count)
         }
         else {
             let editCell = tableView.dequeueReusableCell(withIdentifier: "EditCategoryCell", for: indexPath) as! EditCategoryCell
@@ -169,15 +170,27 @@ class CategoryViewController: UITableViewController, UITableViewDragDelegate, UI
     
     
     //MARK: - Data manipulation methods
-    
-    func loadCategories(with request: NSFetchRequest<Category> = Category.fetchRequest()){
+    func loadCategories(){
         do {
-            let categories = try context.fetch(request)
+            let categories = try context.fetch(Category.fetchRequest())
             self.categories = categories.sorted(by: { $0.index < $1.index })
         } catch {
             print("Error fetching data from context: \(error)")
         }
         tableView.reloadData()
+    }
+    
+    func getCount(for category: Category) -> Int {
+        var count = 0
+        let request = Item.fetchRequest()
+        request.predicate = NSPredicate(format: "parentCategory.name MATCHES %@ && done == FALSE", category.name!)
+        do {
+            let items = try context.fetch(request)
+            count = items.count
+        } catch {
+            print("Error fetching data from context: \(error)")
+        }
+        return count
     }
     
     func saveCategories(){
