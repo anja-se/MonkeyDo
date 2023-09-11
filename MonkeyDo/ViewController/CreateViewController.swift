@@ -10,19 +10,19 @@ import UIKit
 class CreateViewController: UIViewController {
 
     @IBOutlet weak var createButton: UIButton!
+    @IBOutlet weak var createButtonView: UIView!
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     var newCategory: Category?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let titleColor = UIColor(named: "PinkColor")
-        createButton.layer.borderColor = titleColor?.cgColor
-        createButton.layer.borderWidth = 2
-        createButton.layer.cornerRadius = 10
         
+        //Layout
+        createButtonView.layer.borderWidth = 2
+        createButtonView.layer.borderColor = UIColor(named: "PinkColor")?.cgColor
+        createButtonView.layer.cornerRadius = 10
         navigationItem.hidesBackButton = true
     }
-    
     
     @IBAction func createButtonClicked(_ sender: UIButton) {
         var textField = UITextField()
@@ -31,7 +31,7 @@ class CreateViewController: UIViewController {
             if !textField.text!.isEmpty {
                 let newCategory = Category(context: self.context)
                 newCategory.name = textField.text!
-                let color = self.getColor()
+                let color = Color.getColor()
                 newCategory.color = color
                 newCategory.index = 0
                 self.saveCategory()
@@ -53,11 +53,5 @@ class CreateViewController: UIViewController {
         } catch {
             print("Error saving category: \(error)")
         }
-    }
-    
-    func getColor() -> String {
-        let colors = ["BlueColor", "PinkColor", "YellowColor", "PurpleColor", "MintColor"]
-        let randomIndex = Int.random(in: 0...3)
-        return colors[randomIndex]
     }
 }

@@ -61,15 +61,8 @@ class TodoListViewController: UITableViewController, UITableViewDragDelegate, UI
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TodoCell", for: indexPath) as! TodoCell
         let item = items[indexPath.row]
-        cell.todoTextField.text = item.title
-        cell.checked = item.done ? true : false
-        if let color = parentCategory?.color {
-            cell.cellView.backgroundColor = UIColor(named: color)
-        }
-        cell.cellView.layer.opacity = item.done ? 0.8 : 1.0
-        cell.todoTextField.accessibilityIdentifier = item.id?.uuidString
+        cell.configure(with: item)
         cell.todoTextField.delegate = self
-    
         return cell
     }
     
@@ -82,41 +75,39 @@ class TodoListViewController: UITableViewController, UITableViewDragDelegate, UI
         tableView.deselectRow(at: indexPath, animated: true)
         let item = items[indexPath.row]
         item.done.toggle()
-        let wasDone = item.done
         tableView.reloadData()
+        let wasDone = item.done
         saveItems()
-        let id = item.id
         
-        if tappedCells[id!] != nil {
+        if tappedCells[item.id!] != nil {
                 return
         }
         
-        let timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { [weak self] _ in
-            guard let self = self else {
-                return
-            }
-       
+        let timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { _ in
             guard let index = self.items.firstIndex(of: item), let item = self.items.first(where: {$0.id == item.id} ) else {
                 self.tappedCells.removeValue(forKey: item.id!)
                 return
             }
-            
+            //case: user undid selection
             if item.done != wasDone {
                 self.tappedCells.removeValue(forKey: item.id!)
                 return
             }
-
+            //case: item is still selected
             if item.done {
                 self.checkedItems.insert(item, at: 0)
                 let newIndex = self.checkedStartIndex
                 self.items.removeAll { $0.id == item.id }
-                if !self.onHide {
+                if self.onHide {
+                    tableView.reloadData()
+                }
+                else {
                     if newIndex >= 0 {
                         self.items.insert(item, at: newIndex)
                         self.tableView.moveRow(at: IndexPath(row: index, section: 0), to: IndexPath(row: newIndex, section: 0))
                     } else {
                         self.items.append(item)
-                        self.tableView.moveRow(at: IndexPath(row: index, section: 0), to: IndexPath(row: items.count - 1, section: 0))
+                        self.tableView.moveRow(at: IndexPath(row: index, section: 0), to: IndexPath(row: self.items.count - 1, section: 0))
                     }
                 }
             } else {

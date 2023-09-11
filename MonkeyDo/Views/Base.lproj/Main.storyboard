@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="33" translatesAutoresizingMaskIntoConstraints="NO" id="RRd-vH-nWA">
-                                <rect key="frame" x="95" y="377.66666666666669" width="203" height="97"/>
+                                <rect key="frame" x="95" y="372.66666666666669" width="203" height="107"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to MonkeyDo" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4e5-Zc-E5S">
                                         <rect key="frame" x="0.0" y="0.0" width="203" height="24"/>
@@ -26,24 +26,32 @@
                                         <color key="textColor" name="WhiteTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jtu-eZ-Gid">
-                                        <rect key="frame" x="16.666666666666671" y="57" width="170" height="40"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Eem-ow-R3u">
+                                        <rect key="frame" x="6.6666666666666714" y="57" width="190" height="50"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jtu-eZ-Gid">
+                                                <rect key="frame" x="10" y="3" width="170" height="44"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
+                                                <color key="tintColor" name="PinkColor"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" title="Create My First List">
+                                                    <color key="titleColor" name="PinkColor"/>
+                                                    <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="createButtonClicked:" destination="fYE-eR-YAt" eventType="touchUpInside" id="j2y-9j-fPg"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="40" id="RE4-8V-6md"/>
-                                            <constraint firstAttribute="width" constant="170" id="X2G-Nk-pVy"/>
+                                            <constraint firstItem="jtu-eZ-Gid" firstAttribute="top" secondItem="Eem-ow-R3u" secondAttribute="top" constant="3" id="SAI-8c-6hv"/>
+                                            <constraint firstAttribute="trailing" secondItem="jtu-eZ-Gid" secondAttribute="trailing" constant="10" id="V8h-oo-wfj"/>
+                                            <constraint firstItem="jtu-eZ-Gid" firstAttribute="leading" secondItem="Eem-ow-R3u" secondAttribute="leading" constant="10" id="fMd-Yh-rYV"/>
+                                            <constraint firstAttribute="bottom" secondItem="jtu-eZ-Gid" secondAttribute="bottom" constant="3" id="pag-PU-AUZ"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
-                                        <color key="tintColor" name="PinkColor"/>
-                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                        <state key="normal" title="Create My First List">
-                                            <color key="titleColor" name="PinkColor"/>
-                                            <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="createButtonClicked:" destination="fYE-eR-YAt" eventType="touchUpInside" id="j2y-9j-fPg"/>
-                                        </connections>
-                                    </button>
+                                    </view>
                                 </subviews>
                             </stackView>
                         </subviews>
@@ -57,6 +65,7 @@
                     <navigationItem key="navigationItem" id="KlD-PU-b0G"/>
                     <connections>
                         <outlet property="createButton" destination="jtu-eZ-Gid" id="vWH-UH-FRA"/>
+                        <outlet property="createButtonView" destination="Eem-ow-R3u" id="tmO-IR-b8r"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="McJ-0X-noc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -157,13 +166,13 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gpG-5h-v0j">
-                                    <rect key="frame" x="129" y="308" width="135" height="40"/>
+                                    <rect key="frame" x="149" y="308" width="95" height="40"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ghL-lG-rAg">
-                                            <rect key="frame" x="10" y="3" width="115" height="34"/>
+                                            <rect key="frame" x="10" y="3" width="75" height="34"/>
                                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
                                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                            <state key="normal" title="Add First Item">
+                                            <state key="normal" title="Add Item">
                                                 <color key="titleColor" name="PinkColor"/>
                                             </state>
                                             <connections>

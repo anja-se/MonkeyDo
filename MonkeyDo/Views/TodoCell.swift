@@ -27,4 +27,12 @@ class TodoCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
         checkImgView.isHidden = checked ? false : true
     }
+    
+    func configure(with item: Item) {
+        todoTextField.text = item.title
+        checked = item.done
+        cellView.backgroundColor = UIColor(named: item.parentCategory!.color!)
+        cellView.layer.opacity = item.done ? 0.8 : 1.0
+        todoTextField.accessibilityIdentifier = item.id?.uuidString
+    }
 }

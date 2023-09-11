@@ -12,7 +12,6 @@ class CategoryViewController: UITableViewController, UITableViewDragDelegate, UI
     @IBOutlet weak var clearView: UIView!
     
     var categories = [Category]()
-    let colors = ["BlueColor", "PinkColor", "YellowColor", "PurpleColor", "MintColor"]
     var onEdit = false
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     var focusedTextField: UITextField?
@@ -147,7 +146,7 @@ class CategoryViewController: UITableViewController, UITableViewDragDelegate, UI
             if !newListName.isEmpty && !listNames.contains(newListName){
                 let newCategory = Category(context: self.context)
                 newCategory.name = newListName
-                let color = self.getColor()
+                let color = Color.getColor(without: self.categories.last?.color)
                 newCategory.color = color
                 newCategory.index = Int16(self.categories.count)
                 self.categories.append(newCategory)
@@ -223,20 +222,6 @@ class CategoryViewController: UITableViewController, UITableViewDragDelegate, UI
     }
     
     //MARK: - Helper methods
-    func getColor() -> String {
-        let range = categories.isEmpty ? 0...4 : 0...3
-        let randomIndex = Int.random(in: range)
-        
-        if categories.isEmpty {
-            return colors[randomIndex]
-        } else {
-            let colors = self.colors.filter { color in
-                color != categories.last?.color
-            }
-            return colors[randomIndex]
-        }
-    }
-    
     @objc func defocus() {
         focusedTextField?.endEditing(true)
         if onEdit {
