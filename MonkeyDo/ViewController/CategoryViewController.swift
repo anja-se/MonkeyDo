@@ -140,7 +140,7 @@ class CategoryViewController: UITableViewController, UITableViewDragDelegate, UI
         let listNames = categories.map { $0.name }
         let alert = UIAlertController(title: "Add new list", message: "", preferredStyle: .alert)
         
-        let action = UIAlertAction(title: "Add list", style: .default){ _ in
+        let addListAction = UIAlertAction(title: "Add list", style: .default){ _ in
             let newListName = textField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
             
             if !newListName.isEmpty && !listNames.contains(newListName){
@@ -153,7 +153,9 @@ class CategoryViewController: UITableViewController, UITableViewDragDelegate, UI
                 self.saveCategories()
             }
         }
-        alert.addAction(action)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        alert.addAction(addListAction)
+        alert.addAction(cancelAction)
         alert.addTextField{ (alertTextField) in
             alertTextField.placeholder = "list name"
             alertTextField.autocapitalizationType = .sentences

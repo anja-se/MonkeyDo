@@ -16,8 +16,8 @@ class TodoListViewController: UITableViewController, UITableViewDragDelegate, UI
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     var items = [Item]()
     var checkedItems = [Item]()
-    var checkedStartIndex: Int {
-        items.count - checkedItems.count
+    var insertIndex: Int {
+        onHide ? items.count : items.count - checkedItems.count
     }
     var parentCategory: Category? {
         didSet {
@@ -95,34 +95,28 @@ class TodoListViewController: UITableViewController, UITableViewDragDelegate, UI
             }
             //case: item is still selected
             if item.done {
-                self.checkedItems.insert(item, at: 0)
-                let newIndex = self.checkedStartIndex
                 self.items.removeAll { $0.id == item.id }
                 if self.onHide {
+                    self.checkedItems.insert(item, at: 0)
                     tableView.reloadData()
                 }
                 else {
-                    if newIndex >= 0 {
-                        self.items.insert(item, at: newIndex)
-                        self.tableView.moveRow(at: IndexPath(row: index, section: 0), to: IndexPath(row: newIndex, section: 0))
-                    } else {
-                        self.items.append(item)
-                        self.tableView.moveRow(at: IndexPath(row: index, section: 0), to: IndexPath(row: self.items.count - 1, section: 0))
-                    }
+                    self.items.insert(item, at: self.insertIndex)
+                    self.checkedItems.insert(item, at: 0)
+                    self.tableView.moveRow(at: IndexPath(row: index, section: 0), to: IndexPath(row: self.insertIndex, section: 0))
                 }
             } else {
+                self.tableView.moveRow(at: IndexPath(row: index, section: 0), to: IndexPath(row: self.insertIndex, section: 0))
                 self.checkedItems.removeAll {
                     $0.id == item.id
                 }
-                let newIndex = self.checkedStartIndex >= 1 ? self.checkedStartIndex - 1 : 0
                 self.items.removeAll { $0.id == item.id }
-                self.items.insert(item, at: newIndex)
-                self.tableView.moveRow(at: IndexPath(row: index, section: 0), to: IndexPath(row: newIndex, section: 0))
+                self.items.insert(item, at: self.insertIndex)
+                
             }
             self.updateIndices()
             self.tappedCells.removeValue(forKey: item.id!)
         }
-        
         tappedCells[item.id!] = timer
     }
     
@@ -138,8 +132,8 @@ class TodoListViewController: UITableViewController, UITableViewDragDelegate, UI
     override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         let item = items[sourceIndexPath.row]
         
-        if onHide || (item.done && destinationIndexPath.row >= checkedStartIndex)
-            || (!item.done && destinationIndexPath.row < checkedStartIndex) {
+        if onHide || (item.done && destinationIndexPath.row >= insertIndex)
+            || (!item.done && destinationIndexPath.row < insertIndex) {
             let mover = items.remove(at: sourceIndexPath.row)
             items.insert(mover, at: destinationIndexPath.row)
             updateIndices()
@@ -179,15 +173,9 @@ class TodoListViewController: UITableViewController, UITableViewDragDelegate, UI
     }
     
     // MARK: - Data manipulation methods
-    func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest(), predicate: NSPredicate? = nil){
-        let categoryPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", parentCategory!.name!)
-        
-        if let additionalPredicate = predicate {
-            let compoundedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, additionalPredicate])
-            request.predicate = compoundedPredicate
-        } else {
-            request.predicate = categoryPredicate
-        }
+    func loadItems(){
+        let request = Item.fetchRequest()
+        request.predicate = NSPredicate(format: "parentCategory.name MATCHES %@", parentCategory!.name!)
         
         do {
             let allItems = try context.fetch(request)
@@ -222,7 +210,6 @@ class TodoListViewController: UITableViewController, UITableViewDragDelegate, UI
     }
     
     func deleteItem(at index: Int){
-        
         let item = items[index]
         context.delete(items[index])
         items.remove(at: index)
@@ -300,7 +287,7 @@ class TodoListViewController: UITableViewController, UITableViewDragDelegate, UI
         var allItemNames = items.map { $0.title }
         let alert = UIAlertController(title: "Add New Todo Item", message: "", preferredStyle: .alert)
         
-        let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
+        let addItemAction = UIAlertAction(title: "Add Item", style: .default) { (action) in
             let itemTitle = textField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
             
             if !itemTitle.isEmpty && !allItemNames.contains(itemTitle) {
@@ -308,17 +295,18 @@ class TodoListViewController: UITableViewController, UITableViewDragDelegate, UI
                 newItem.title = itemTitle
                 newItem.done = false
                 newItem.id = UUID()
-                let newIndex = self.checkedStartIndex >= 0 ? self.checkedStartIndex : 0
-                newItem.index = Int16(newIndex)
+                newItem.index = Int16(self.insertIndex)
                 newItem.parentCategory = self.parentCategory
                 
-                self.items.insert(newItem, at: newIndex)
+                self.items.insert(newItem, at: self.insertIndex)
                 self.saveItems()
                 self.tableView.reloadData()
                 self.updateIndices()
             }
         }
-        alert.addAction(action)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        alert.addAction(addItemAction)
+        alert.addAction(cancelAction)
         alert.addTextField { (alertTextField) in
             alertTextField.placeholder = "Create new item"
             textField.autocapitalizationType = .words

@@ -15,6 +15,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        
+//        let request = Item.fetchRequest()
+//        let context = persistentContainer.viewContext
+//
+//        do {
+//            var allItems = try context.fetch(request)
+//            for item in allItems {
+//                if item.parentCategory == nil {
+//                    print("Item called \"\(item.title!)\" is nil")
+//                    context.delete(item)
+//                }
+//            }
+//            try context.save()
+//
+//        } catch {
+//            print("Error fetching data from context: \(error)")
+//        }
+        
+        
+        
         return true
     }
 
